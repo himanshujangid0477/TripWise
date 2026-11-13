@@ -1,16 +1,84 @@
-# React + Vite
+# TripWise – Travel Planner & Itinerary Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+TripWise is a React-based travel planning application that helps users explore destinations, save places and organise trips through a day-by-day itinerary.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Interactive map using Leaflet.
+- Mock destination locations with category-based markers.
+- Marker clustering.
+- Destination details on marker selection.
+- Save and remove favourite places.
+- Day-by-day itinerary planner.
+- Drag-and-drop itinerary organisation.
+- Responsive dashboard interface.
 
-## React Compiler
+## Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Technology | Purpose |
+|---|---|
+| React | User interface |
+| Vite | Development and build tooling |
+| JavaScript | Application logic |
+| CSS | Styling and responsive layout |
+| Leaflet | Interactive maps |
+| Leaflet MarkerCluster | Map marker clustering |
+| dnd-kit | Drag-and-drop functionality |
 
-## Expanding the Oxlint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Clone the repository:
+
+```bash
+git clone https://github.com/himanshujangid0477/TripWise.git
+cd TripWise
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+## Project Structure
+
+```text
+TripWise/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── MapView.jsx
+│   │   └── ItineraryPlanner.jsx
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── package.json
+└── README.md
+```
+
+## Upcoming Development
+
+- Estimated travel time between stops.
+- Budget tracker with multiple currencies.
+- Packing checklist and progress tracking.
+- Read-only itinerary sharing.
+- JSON and ICS import/export.
+- Print-friendly itinerary.
+- Dark and light mode.
+
+## Project Information
+
+**Project:** TripWise  
+**Type:** Travel Planner Web Application  
+**Status:** Under Development  
+**Repository:** [GitHub – TripWise](https://github.com/himanshujangid0477/TripWise)
+
+Developed as part of an internship assignment.
