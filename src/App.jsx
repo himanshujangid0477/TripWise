@@ -1,4 +1,5 @@
 
+import BudgetTracker from "./components/BudgetTracker";
 import ItineraryPlanner from "./components/ItineraryPlanner";
 import MapView from "./components/MapView";
 import Navbar from "./components/Navbar";
@@ -120,6 +121,9 @@ export default function App() {
 </section>
 <section className="itinerary-section">
   <ItineraryPlanner />
+</section>
+<section className="budget-section-wrapper">
+  <BudgetTracker />
 </section>
         <section className="trips-section">
           <div className="section-heading">
