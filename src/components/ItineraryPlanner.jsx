@@ -6,26 +6,77 @@ import {
   closestCorners,
   useSensor,
   useSensors,
+  useDroppable,
 } from "@dnd-kit/core";
+
 import {
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
+
 import { CSS } from "@dnd-kit/utilities";
 
+// Mock places with geographical coordinates
 const initialPlaces = {
   available: [
-    { id: "place-1", name: "Hawa Mahal", category: "Historical" },
-    { id: "place-2", name: "City Palace", category: "Historical" },
-    { id: "place-3", name: "Jal Mahal", category: "Nature" },
-    { id: "place-4", name: "Albert Hall Museum", category: "Museum" },
+    {
+      id: "place-1",
+      name: "Hawa Mahal",
+      category: "Historical",
+      position: [26.9239, 75.8267],
+    },
+    {
+      id: "place-2",
+      name: "City Palace",
+      category: "Historical",
+      position: [26.9258, 75.8237],
+    },
+    {
+      id: "place-3",
+      name: "Jal Mahal",
+      category: "Nature",
+      position: [26.9538, 75.8461],
+    },
+    {
+      id: "place-4",
+      name: "Albert Hall Museum",
+      category: "Museum",
+      position: [26.9117, 75.8197],
+    },
   ],
   "day-1": [],
   "day-2": [],
   "day-3": [],
 };
+
+// Calculate straight-line distance using the Haversine formula
+function calculateDistance(pointA, pointB) {
+  const toRadians = (degrees) => (degrees * Math.PI) / 180;
+  const earthRadius = 6371;
+
+  const lat1 = toRadians(pointA[0]);
+  const lat2 = toRadians(pointB[0]);
+  const deltaLat = toRadians(pointB[0] - pointA[0]);
+  const deltaLon = toRadians(pointB[1] - pointA[1]);
+
+  const a =
+    Math.sin(deltaLat / 2) ** 2 +
+    Math.cos(lat1) *
+      Math.cos(lat2) *
+      Math.sin(deltaLon / 2) ** 2;
+
+  return earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Mock road travel estimate: 30 km/h average speed and 1.3 road factor
+function estimateTravelTime(pointA, pointB) {
+  const estimatedRoadDistance =
+    calculateDistance(pointA, pointB) * 1.3;
+
+  return Math.max(1, Math.round((estimatedRoadDistance / 30) * 60));
+}
 
 function SortablePlace({ place }) {
   const {
@@ -52,6 +103,7 @@ function SortablePlace({ place }) {
       {...listeners}
     >
       <span className="drag-handle">⠿</span>
+
       <div>
         <strong>{place.name}</strong>
         <small>{place.category}</small>
@@ -66,6 +118,7 @@ function DayColumn({ id, title, places }) {
   return (
     <div className="itinerary-day">
       <h3>{title}</h3>
+
       <div
         ref={setNodeRef}
         className={`itinerary-drop-area ${isOver ? "drag-over" : ""}`}
@@ -74,8 +127,24 @@ function DayColumn({ id, title, places }) {
           items={places.map((place) => place.id)}
           strategy={verticalListSortingStrategy}
         >
-          {places.map((place) => (
-            <SortablePlace key={place.id} place={place} />
+          {places.map((place, index) => (
+            <div key={place.id} className="itinerary-stop">
+              <SortablePlace place={place} />
+
+              {index < places.length - 1 && (
+                <div className="travel-estimate">
+                  <span>↓</span>
+                  <span>
+                    Approx.{" "}
+                    {estimateTravelTime(
+                      place.position,
+                      places[index + 1].position
+                    )}{" "}
+                    min to next stop
+                  </span>
+                </div>
+              )}
+            </div>
           ))}
         </SortableContext>
 
@@ -86,8 +155,6 @@ function DayColumn({ id, title, places }) {
     </div>
   );
 }
-
-import { useDroppable } from "@dnd-kit/core";
 
 export default function ItineraryPlanner() {
   const [items, setItems] = useState(initialPlaces);
@@ -129,13 +196,17 @@ export default function ItineraryPlanner() {
       );
 
       if (source === destination) {
-        if (oldIndex === -1 || newIndex === -1) return currentItems;
+        if (oldIndex === -1 || newIndex === -1) {
+          return currentItems;
+        }
 
         return {
           ...currentItems,
           [source]: arrayMove(sourceItems, oldIndex, newIndex),
         };
       }
+
+      if (oldIndex === -1) return currentItems;
 
       const [movedPlace] = sourceItems.splice(oldIndex, 1);
 
@@ -173,9 +244,24 @@ export default function ItineraryPlanner() {
             title="Available places"
             places={items.available}
           />
-          <DayColumn id="day-1" title="Day 1" places={items["day-1"]} />
-          <DayColumn id="day-2" title="Day 2" places={items["day-2"]} />
-          <DayColumn id="day-3" title="Day 3" places={items["day-3"]} />
+
+          <DayColumn
+            id="day-1"
+            title="Day 1"
+            places={items["day-1"]}
+          />
+
+          <DayColumn
+            id="day-2"
+            title="Day 2"
+            places={items["day-2"]}
+          />
+
+          <DayColumn
+            id="day-3"
+            title="Day 3"
+            places={items["day-3"]}
+          />
         </div>
       </DndContext>
     </section>
