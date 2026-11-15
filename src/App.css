@@ -943,3 +943,22 @@ button {
     grid-template-columns: 1fr;
   }
 }
+.budget-chart {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.category-budget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.category-budget-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}

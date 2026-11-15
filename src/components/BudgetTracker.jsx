@@ -1,6 +1,17 @@
 
 import { useMemo, useState } from "react";
 import { Wallet, Plus, Trash2 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const rates = {
   INR: 1,
@@ -23,7 +34,14 @@ const initialExpenses = [
   { id: 2, title: "Food", category: "Food", amount: 800, currency: "INR" },
   { id: 3, title: "Local transport", category: "Transport", amount: 500, currency: "INR" },
 ];
-
+const defaultCategoryBudgets = {
+  Accommodation: 4000,
+  Food: 2500,
+  Transport: 2000,
+  Activities: 1500,
+  Shopping: 1000,
+  Other: 1000,
+};
 export default function BudgetTracker() {
   const [budget, setBudget] = useState(12000);
   const [expenses, setExpenses] = useState(initialExpenses);
@@ -31,6 +49,7 @@ export default function BudgetTracker() {
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("INR");
   const [category, setCategory] = useState("Food");
+  const [categoryBudgets, setCategoryBudgets] = useState(defaultCategoryBudgets);
 
   const totalSpent = useMemo(
     () =>
@@ -53,7 +72,17 @@ export default function BudgetTracker() {
         0
       ),
   }));
-
+  const chartData = categories.map((name) => ({
+  name,
+  Budget: categoryBudgets[name],
+  Actual: Math.round(
+    categoryTotals.find((item) => item.name === name).total
+  ),
+}));
+const allocated = Object.values(categoryBudgets).reduce(
+  (sum, value) => sum + value,
+  0
+);
   const addExpense = (event) => {
     event.preventDefault();
 
@@ -199,7 +228,62 @@ export default function BudgetTracker() {
           ))}
         </div>
       </div>
+<div className="budget-panel budget-chart-panel">
+  <h3>Budget vs actual spending</h3>
 
+  <div className="budget-chart">
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart
+        data={chartData}
+        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="currentColor"
+          strokeOpacity={0.15}
+        />
+        <XAxis dataKey="name" tick={{ fill: "currentColor", fontSize: 12 }} />
+        <YAxis tick={{ fill: "currentColor", fontSize: 12 }} />
+        <Tooltip formatter={(value) => formatINR(value)} />
+        <Legend />
+        <Bar dataKey="Budget" fill="#94a3b8" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="Actual" radius={[4, 4, 0, 0]}>
+          {chartData.map((entry) => (
+            <Cell
+              key={entry.name}
+              fill={entry.Actual > entry.Budget ? "#dc2626" : "#2563eb"}
+            />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+
+  <h3>Set category budgets (INR)</h3>
+  <div className="category-budget-grid">
+    {categories.map((name) => (
+      <label key={name}>
+        <span>{name}</span>
+        <input
+          type="number"
+          min="0"
+          value={categoryBudgets[name]}
+          onChange={(e) =>
+            setCategoryBudgets((current) => ({
+              ...current,
+              [name]: Math.max(0, Number(e.target.value)),
+            }))
+          }
+        />
+      </label>
+    ))}
+  </div>
+
+  <p className="budget-note">
+    Allocated {formatINR(allocated)} of {formatINR(budget)} total budget.
+    {allocated > budget && " Category budgets exceed the total budget."}
+  </p>
+</div>
       <div className="budget-panel expense-list">
         <h3>Expense history</h3>
 
