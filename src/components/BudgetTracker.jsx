@@ -247,7 +247,7 @@ const allocated = Object.values(categoryBudgets).reduce(
         <Tooltip formatter={(value) => formatINR(value)} />
         <Legend />
         <Bar dataKey="Budget" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="Actual" radius={[4, 4, 0, 0]}>
+        <Bar dataKey="Actual" fill="#2563eb" radius={[4, 4, 0, 0]}>
           {chartData.map((entry) => (
             <Cell
               key={entry.name}
