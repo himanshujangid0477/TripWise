@@ -3,6 +3,7 @@ import BudgetTracker from "./components/BudgetTracker";
 import ItineraryPlanner from "./components/ItineraryPlanner";
 import MapView from "./components/MapView";
 import Navbar from "./components/Navbar";
+import useLocalStorage from "./hooks/useLocalStorage";
 import {
   ArrowRight,
   MapPin,
@@ -50,6 +51,19 @@ const stats = [
 ];
 
 export default function App() {
+  const [savedPlaceIds, setSavedPlaceIds] = useLocalStorage(
+    "tripwise-saved-places",
+    []
+  );
+
+  const savePlace = (id) =>
+    setSavedPlaceIds((current) =>
+      current.includes(id) ? current : [...current, id]
+    );
+
+  const removePlace = (id) =>
+    setSavedPlaceIds((current) => current.filter((item) => item !== id));
+
   return (
     <div className="app">
       <Navbar />
@@ -117,7 +131,7 @@ export default function App() {
     </div>
   </div>
 
-  <MapView />
+  <MapView savedPlaceIds={savedPlaceIds} onSave={savePlace} onRemove={removePlace} />
 </section>
 <section className="itinerary-section">
   <ItineraryPlanner />
