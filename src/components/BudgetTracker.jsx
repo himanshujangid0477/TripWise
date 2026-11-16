@@ -1,6 +1,7 @@
 
 import { useMemo, useState } from "react";
 import { Wallet, Plus, Trash2 } from "lucide-react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import {
   BarChart,
   Bar,
@@ -43,13 +44,13 @@ const defaultCategoryBudgets = {
   Other: 1000,
 };
 export default function BudgetTracker() {
-  const [budget, setBudget] = useState(12000);
-  const [expenses, setExpenses] = useState(initialExpenses);
+  const [budget, setBudget] = useLocalStorage("tripwise-budget", 12000);
+  const [expenses, setExpenses] = useLocalStorage("tripwise-expenses", initialExpenses);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("INR");
   const [category, setCategory] = useState("Food");
-  const [categoryBudgets, setCategoryBudgets] = useState(defaultCategoryBudgets);
+  const [categoryBudgets, setCategoryBudgets] = useLocalStorage("tripwise-category-budgets", defaultCategoryBudgets);
 
   const totalSpent = useMemo(
     () =>
