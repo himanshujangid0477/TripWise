@@ -1,32 +1,50 @@
-
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Map, Compass, Wallet, ClipboardList, Sun, Moon } from "lucide-react";
+import useTheme from "../hooks/useTheme";
 
 const navItems = [
-  { label: "Explore", icon: Compass },
-  { label: "My Trips", icon: Map },
-  { label: "Budget", icon: Wallet },
-  { label: "Checklist", icon: ClipboardList },
+  { label: "Explore", icon: Compass, target: "explore" },
+  { label: "My Trips", icon: Map, target: "trips" },
+  { label: "Budget", icon: Wallet, target: "budget" },
+  { label: "Checklist", icon: ClipboardList, target: "checklist" },
 ];
 
 export default function Navbar() {
+  const [active, setActive] = useState("Explore");
+  const [theme, toggleTheme] = useTheme();
+
+  const goTo = (event, item) => {
+    event.preventDefault();
+    setActive(item.label);
+    document
+      .getElementById(item.target)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <header className="navbar">
-      <a href="/" className="brand">
+      <Link
+        to="/"
+        className="brand"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <span className="brand-icon">
           <Compass size={23} />
         </span>
         <span>TripWise</span>
-      </a>
+      </Link>
 
-      <nav className="nav-links">
-        {navItems.map((item, index) => {
+      <nav className="nav-links" aria-label="Sections">
+        {navItems.map((item) => {
           const Icon = item.icon;
 
           return (
             <a
-              href="#"
+              href={`#${item.target}`}
               key={item.label}
-              className={`nav-link ${index === 0 ? "active" : ""}`}
+              className={`nav-link ${active === item.label ? "active" : ""}`}
+              onClick={(event) => goTo(event, item)}
             >
               <Icon size={17} />
               {item.label}
@@ -36,8 +54,15 @@ export default function Navbar() {
       </nav>
 
       <div className="nav-actions">
-        <button className="icon-button" aria-label="Toggle theme">
-          <Sun size={19} />
+        <button
+          type="button"
+          className="icon-button"
+          onClick={toggleTheme}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
+        >
+          {theme === "dark" ? <Sun size={19} /> : <Moon size={19} />}
         </button>
         <div className="profile-avatar">H</div>
       </div>

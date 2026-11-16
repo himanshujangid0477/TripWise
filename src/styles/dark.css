@@ -1,0 +1,261 @@
+/* Dark theme: generated overrides for the original light styles. */
+:root[data-theme="dark"] {
+  color: #e6edf3;
+  background: #0f1720;
+}
+
+[data-theme="dark"] .app {
+  background: #0f1720;
+}
+
+[data-theme="dark"] .navbar {
+  background: #16212b;
+  border-bottom: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .brand {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .brand-icon {
+  background: #15332b;
+}
+
+[data-theme="dark"] .nav-link {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+  background: #15332b;
+}
+
+[data-theme="dark"] .icon-button {
+  border: 1px solid #2a3a49;
+  background: #16212b;
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .profile-avatar {
+  background: #1a3d33;
+}
+
+[data-theme="dark"] .welcome-section {
+  background: linear-gradient(115deg, #15332b, #1c2b3d);
+}
+
+[data-theme="dark"] .welcome-section h1 {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .welcome-section p {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .floating-tag {
+  background: #16212b;
+}
+
+[data-theme="dark"] .stat-card {
+  background: #16212b;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .stat-icon {
+  background: #15332b;
+}
+
+[data-theme="dark"] .stat-card p {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .stat-card h3 {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .section-heading h2 {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .trip-card {
+  background: #16212b;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .trip-tag {
+  background: #16212b;
+}
+
+[data-theme="dark"] .trip-detail {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .trip-divider {
+  background: #243342;
+}
+
+[data-theme="dark"] .trip-budget {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .trip-budget strong {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .trip-budget small {
+  color: #8394a3;
+}
+
+[data-theme="dark"] .progress-track {
+  background: #243342;
+}
+
+[data-theme="dark"] .trip-footer span {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .trip-footer button {
+  background: #15332b;
+}
+
+[data-theme="dark"] .footer {
+  color: #8394a3;
+}
+
+[data-theme="dark"] #tripwise-map {
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .map-legend span {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .place-details,
+[data-theme="dark"] .saved-places {
+  background: #16212b;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .place-details p,
+[data-theme="dark"] .saved-places > p {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .place-actions .close-place {
+  background: #243342;
+  color: #d5dee7;
+}
+
+[data-theme="dark"] .saved-place {
+  border-top: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .saved-place small {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .saved-place button {
+  background: #3b1f22;
+  color: #f87171;
+}
+
+[data-theme="dark"] .itinerary-day {
+  background: #1a2733;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .itinerary-drop-area.drag-over {
+  background: #15332b;
+}
+
+[data-theme="dark"] .itinerary-place {
+  background: #16212b;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .drag-handle {
+  color: #8394a3;
+}
+
+[data-theme="dark"] .itinerary-place small {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .itinerary-empty {
+  color: #8394a3;
+}
+
+[data-theme="dark"] .budget-card,
+[data-theme="dark"] .budget-panel {
+  background: #16212b;
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .budget-card p {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .budget-card input {
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .expense-form input,
+[data-theme="dark"] .expense-form select {
+  border: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .budget-note {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .expense-row {
+  border-bottom: 1px solid #2a3a49;
+}
+
+[data-theme="dark"] .expense-row small {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .expense-row button {
+  color: #f87171;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: #1a2733;
+  color: #e6edf3;
+  border-color: #2a3a49;
+}
+
+[data-theme="dark"] input::placeholder {
+  color: #7d8e9d;
+}
+
+[data-theme="dark"] .leaflet-tile {
+  filter: brightness(0.72) contrast(1.05) saturate(0.85);
+}
+
+[data-theme="dark"] .leaflet-popup-content-wrapper,
+[data-theme="dark"] .leaflet-popup-tip {
+  background: #16212b;
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: #16212b !important;
+  border-color: #2a3a49 !important;
+}
+
+[data-theme="dark"] .budget-chart {
+  color: #9fb0bf;
+}
+
+[data-theme="dark"] .trip-card,
+[data-theme="dark"] .stat-card {
+  border-color: #2a3a49;
+}

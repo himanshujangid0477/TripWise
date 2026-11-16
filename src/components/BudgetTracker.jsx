@@ -3,6 +3,14 @@ import { useMemo, useState } from "react";
 import { Wallet, Plus, Trash2 } from "lucide-react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import {
+  categories,
+  DEFAULT_TOTAL_BUDGET,
+  defaultCategoryBudgets,
+  initialExpenses,
+  rates,
+} from "../data/budget";
+import { KEYS } from "../utils/tripData";
+import {
   BarChart,
   Bar,
   Cell,
@@ -14,43 +22,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const rates = {
-  INR: 1,
-  USD: 83,
-  EUR: 90,
-  GBP: 105,
-};
-
-const categories = [
-  "Accommodation",
-  "Food",
-  "Transport",
-  "Activities",
-  "Shopping",
-  "Other",
-];
-
-const initialExpenses = [
-  { id: 1, title: "Hotel", category: "Accommodation", amount: 2000, currency: "INR" },
-  { id: 2, title: "Food", category: "Food", amount: 800, currency: "INR" },
-  { id: 3, title: "Local transport", category: "Transport", amount: 500, currency: "INR" },
-];
-const defaultCategoryBudgets = {
-  Accommodation: 4000,
-  Food: 2500,
-  Transport: 2000,
-  Activities: 1500,
-  Shopping: 1000,
-  Other: 1000,
-};
 export default function BudgetTracker() {
-  const [budget, setBudget] = useLocalStorage("tripwise-budget", 12000);
-  const [expenses, setExpenses] = useLocalStorage("tripwise-expenses", initialExpenses);
+  const [budget, setBudget] = useLocalStorage(KEYS.budget, DEFAULT_TOTAL_BUDGET);
+  const [expenses, setExpenses] = useLocalStorage(KEYS.expenses, initialExpenses);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("INR");
   const [category, setCategory] = useState("Food");
-  const [categoryBudgets, setCategoryBudgets] = useLocalStorage("tripwise-category-budgets", defaultCategoryBudgets);
+  const [categoryBudgets, setCategoryBudgets] = useLocalStorage(
+    KEYS.categoryBudgets,
+    defaultCategoryBudgets
+  );
 
   const totalSpent = useMemo(
     () =>

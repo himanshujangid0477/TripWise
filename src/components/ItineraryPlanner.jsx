@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useMemo } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -18,65 +18,10 @@ import {
 
 import { CSS } from "@dnd-kit/utilities";
 
-// Mock places with geographical coordinates
-const initialPlaces = {
-  available: [
-    {
-      id: "place-1",
-      name: "Hawa Mahal",
-      category: "Historical",
-      position: [26.9239, 75.8267],
-    },
-    {
-      id: "place-2",
-      name: "City Palace",
-      category: "Historical",
-      position: [26.9258, 75.8237],
-    },
-    {
-      id: "place-3",
-      name: "Jal Mahal",
-      category: "Nature",
-      position: [26.9538, 75.8461],
-    },
-    {
-      id: "place-4",
-      name: "Albert Hall Museum",
-      category: "Museum",
-      position: [26.9117, 75.8197],
-    },
-  ],
-  "day-1": [],
-  "day-2": [],
-  "day-3": [],
-};
-
-// Calculate straight-line distance using the Haversine formula
-function calculateDistance(pointA, pointB) {
-  const toRadians = (degrees) => (degrees * Math.PI) / 180;
-  const earthRadius = 6371;
-
-  const lat1 = toRadians(pointA[0]);
-  const lat2 = toRadians(pointB[0]);
-  const deltaLat = toRadians(pointB[0] - pointA[0]);
-  const deltaLon = toRadians(pointB[1] - pointA[1]);
-
-  const a =
-    Math.sin(deltaLat / 2) ** 2 +
-    Math.cos(lat1) *
-      Math.cos(lat2) *
-      Math.sin(deltaLon / 2) ** 2;
-
-  return earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-// Mock road travel estimate: 30 km/h average speed and 1.3 road factor
-function estimateTravelTime(pointA, pointB) {
-  const estimatedRoadDistance =
-    calculateDistance(pointA, pointB) * 1.3;
-
-  return Math.max(1, Math.round((estimatedRoadDistance / 30) * 60));
-}
+import useLocalStorage from "../hooks/useLocalStorage";
+import { addDays, formatDay } from "../utils/format";
+import { estimateTravelTime } from "../utils/travel";
+import { defaultTrip, KEYS } from "../utils/tripData";
 
 function SortablePlace({ place }) {
   const {
@@ -112,12 +57,22 @@ function SortablePlace({ place }) {
   );
 }
 
-function DayColumn({ id, title, places }) {
+function DayColumn({
+  id,
+  title,
+  subtitle,
+  places,
+  showTravel = true,
+  emptyText = "Drag places here",
+}) {
   const { setNodeRef, isOver } = useDroppable({ id });
 
   return (
     <div className="itinerary-day">
-      <h3>{title}</h3>
+      <h3>
+        {title}
+        {subtitle && <small className="day-date">{subtitle}</small>}
+      </h3>
 
       <div
         ref={setNodeRef}
@@ -131,7 +86,7 @@ function DayColumn({ id, title, places }) {
             <div key={place.id} className="itinerary-stop">
               <SortablePlace place={place} />
 
-              {index < places.length - 1 && (
+              {showTravel && index < places.length - 1 && (
                 <div className="travel-estimate">
                   <span>↓</span>
                   <span>
@@ -149,15 +104,43 @@ function DayColumn({ id, title, places }) {
         </SortableContext>
 
         {places.length === 0 && (
-          <p className="itinerary-empty">Drag places here</p>
+          <p className="itinerary-empty">{emptyText}</p>
         )}
       </div>
     </div>
   );
 }
 
-export default function ItineraryPlanner() {
-  const [items, setItems] = useState(initialPlaces);
+export default function ItineraryPlanner({
+  savedPlaces,
+  itinerary,
+  setItinerary,
+}) {
+  const [trip] = useLocalStorage(KEYS.trip, defaultTrip);
+  const dayDate = (index) => formatDay(addDays(trip.startDate, index));
+
+  const items = useMemo(() => {
+    const assigned = new Set(Object.values(itinerary).flat());
+    const byId = (id) => savedPlaces.find((place) => place.id === id);
+
+    return {
+      available: savedPlaces.filter((place) => !assigned.has(place.id)),
+      "day-1": itinerary["day-1"].map(byId).filter(Boolean),
+      "day-2": itinerary["day-2"].map(byId).filter(Boolean),
+      "day-3": itinerary["day-3"].map(byId).filter(Boolean),
+    };
+  }, [savedPlaces, itinerary]);
+
+  const setItems = (updater) => {
+    const next = updater(items);
+    if (next === items) return;
+
+    setItinerary({
+      "day-1": next["day-1"].map((place) => place.id),
+      "day-2": next["day-2"].map((place) => place.id),
+      "day-3": next["day-3"].map((place) => place.id),
+    });
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -242,24 +225,29 @@ export default function ItineraryPlanner() {
           <DayColumn
             id="available"
             title="Available places"
+            showTravel={false}
+            emptyText="No unscheduled places. Save places on the map to add them here."
             places={items.available}
           />
 
           <DayColumn
             id="day-1"
             title="Day 1"
+            subtitle={dayDate(0)}
             places={items["day-1"]}
           />
 
           <DayColumn
             id="day-2"
             title="Day 2"
+            subtitle={dayDate(1)}
             places={items["day-2"]}
           />
 
           <DayColumn
             id="day-3"
             title="Day 3"
+            subtitle={dayDate(2)}
             places={items["day-3"]}
           />
         </div>

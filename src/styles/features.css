@@ -1,0 +1,589 @@
+/* Styles for the checklist, trip tools, share view and map popover. */
+
+:root {
+  --f-surface: #ffffff;
+  --f-surface-2: #f8fafc;
+  --f-text: #202b35;
+  --f-muted: #66727f;
+  --f-border: #e8edf2;
+  --f-tint: #eaf6f2;
+  --f-accent: #159b75;
+  --f-accent-dark: #107d5e;
+  --f-danger: #d04444;
+  --f-danger-tint: #fff0f0;
+}
+
+:root[data-theme="dark"] {
+  --f-surface: #16212b;
+  --f-surface-2: #1a2733;
+  --f-text: #e6edf3;
+  --f-muted: #9fb0bf;
+  --f-border: #2a3a49;
+  --f-tint: #15332b;
+  --f-accent: #20b88e;
+  --f-accent-dark: #159b75;
+  --f-danger: #f87171;
+  --f-danger-tint: #3b1f22;
+}
+
+.checklist-section-wrapper,
+.tools-section-wrapper {
+  margin: 35px 0;
+}
+
+/* Itinerary day dates */
+.day-date {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--f-muted);
+}
+
+/* Map popover */
+.map-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 170px;
+}
+
+.map-popup span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.map-popup p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.map-popup button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--f-accent);
+  color: #fff;
+  padding: 8px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.map-popup button:disabled {
+  background: #94a3b8;
+  cursor: default;
+}
+
+/* Buttons shared by the new sections */
+.check-small-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--f-accent);
+  background: var(--f-accent);
+  color: #fff;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.check-small-button.outline {
+  background: transparent;
+  color: var(--f-accent);
+}
+
+.check-small-button:hover {
+  filter: brightness(0.95);
+}
+
+/* Checklist */
+.check-templates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.check-template-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.check-overall {
+  margin-bottom: 18px;
+}
+
+.check-overall-heading {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.check-overall-heading span {
+  color: var(--f-muted);
+}
+
+.check-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.check-progress .progress-track {
+  flex: 1;
+}
+
+.check-progress span {
+  min-width: 38px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--f-muted);
+}
+
+.check-add,
+.check-add-inline {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.check-add input,
+.check-add-inline input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--f-border);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.check-add-inline {
+  margin: 8px 0 8px 30px;
+}
+
+.check-list,
+.check-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.check-children {
+  margin-left: 22px;
+  padding-left: 10px;
+  border-left: 2px solid var(--f-border);
+}
+
+.check-node {
+  margin: 4px 0;
+}
+
+.check-list > .check-node {
+  padding: 10px 0;
+  border-top: 1px solid var(--f-border);
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.check-spacer {
+  width: 26px;
+  flex: none;
+}
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.check-label input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--f-accent);
+  flex: none;
+}
+
+.check-label.done span {
+  text-decoration: line-through;
+  color: var(--f-muted);
+}
+
+.check-count {
+  font-size: 12px;
+  color: var(--f-muted);
+}
+
+.check-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--f-muted);
+  cursor: pointer;
+}
+
+.check-icon-button:hover {
+  background: var(--f-tint);
+  color: var(--f-accent);
+}
+
+.check-icon-button.danger:hover {
+  background: var(--f-danger-tint);
+  color: var(--f-danger);
+}
+
+.check-node > .check-progress {
+  margin: 2px 0 4px 32px;
+}
+
+.check-clear {
+  margin-top: 14px;
+  border: 0;
+  background: transparent;
+  color: var(--f-danger);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--f-muted);
+  border: 1px dashed var(--f-border);
+  border-radius: 12px;
+}
+
+.empty-state strong {
+  color: var(--f-text);
+}
+
+.empty-state p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 13px;
+}
+
+/* Trip tools */
+.tools-trip-fields {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.tools-trip-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--f-muted);
+}
+
+.tools-trip-fields input,
+.share-link-box input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--f-border);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.tool-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--f-border);
+  border-radius: 10px;
+  background: var(--f-surface-2);
+  color: var(--f-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tool-button:hover {
+  border-color: var(--f-accent);
+  color: var(--f-accent);
+}
+
+.share-link-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tool-message {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.tool-message.success {
+  background: var(--f-tint);
+  color: var(--f-accent-dark);
+}
+
+.tool-message.error {
+  background: var(--f-danger-tint);
+  color: var(--f-danger);
+}
+
+:root[data-theme="dark"] .tool-message.success {
+  color: #7fe0bf;
+}
+
+.tool-message ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+/* Share view */
+.share-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  color: var(--f-text);
+}
+
+.share-card {
+  padding: 28px;
+  border: 1px solid var(--f-border);
+  border-radius: 14px;
+  background: var(--f-surface);
+}
+
+.share-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--f-border);
+}
+
+.share-header h1 {
+  margin: 8px 0 4px;
+  font-family: "Manrope", sans-serif;
+  font-size: 32px;
+}
+
+.share-header p {
+  margin: 0;
+  color: var(--f-muted);
+}
+
+.share-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--f-tint);
+  color: var(--f-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.share-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.share-heading {
+  margin: 30px 0 14px;
+  font-family: "Manrope", sans-serif;
+  font-size: 22px;
+}
+
+.share-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.share-day {
+  padding: 16px;
+  border: 1px solid var(--f-border);
+  border-radius: 12px;
+  background: var(--f-surface);
+  break-inside: avoid;
+}
+
+.share-day h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.share-day h3 small {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--f-muted);
+}
+
+.share-day ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.share-day li {
+  margin-bottom: 10px;
+}
+
+.share-day li span {
+  display: block;
+  font-size: 12px;
+  color: var(--f-muted);
+}
+
+.share-travel {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--f-accent);
+}
+
+.share-empty,
+.share-note {
+  color: var(--f-muted);
+  font-size: 14px;
+}
+
+.share-block {
+  break-inside: avoid;
+}
+
+.share-totals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.share-totals div {
+  padding: 14px;
+  border: 1px solid var(--f-border);
+  border-radius: 12px;
+  background: var(--f-surface);
+}
+
+.share-totals span {
+  display: block;
+  font-size: 12px;
+  color: var(--f-muted);
+}
+
+.share-totals strong {
+  font-size: 20px;
+}
+
+.share-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.share-table th,
+.share-table td {
+  padding: 9px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--f-border);
+}
+
+.share-table th {
+  color: var(--f-muted);
+  font-weight: 600;
+}
+
+.share-table tr.over td {
+  color: var(--f-danger);
+  font-weight: 600;
+}
+
+.share-checklist {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.share-checklist .share-checklist {
+  padding-left: 22px;
+}
+
+.share-checklist label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 14px;
+}
+
+.share-checklist label.done span {
+  text-decoration: line-through;
+  color: var(--f-muted);
+}
+
+/* Responsive additions */
+@media (max-width: 700px) {
+  .tools-trip-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .share-totals {
+    grid-template-columns: 1fr;
+  }
+
+  .check-add,
+  .share-link-box {
+    flex-direction: column;
+  }
+
+  .share-header h1 {
+    font-size: 26px;
+  }
+}

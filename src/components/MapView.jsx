@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet.markercluster";
 
@@ -10,6 +10,15 @@ export default function MapView({ savedPlaceIds, onSave, onRemove }) {
   const savedPlaces = savedPlaceIds
     .map((id) => places.find((place) => place.id === id))
     .filter(Boolean);
+
+  // Popups are created once, so they read the latest props through refs.
+  const onSaveRef = useRef(onSave);
+  const savedIdsRef = useRef(savedPlaceIds);
+
+  useEffect(() => {
+    onSaveRef.current = onSave;
+    savedIdsRef.current = savedPlaceIds;
+  }, [onSave, savedPlaceIds]);
 
   useEffect(() => {
     const map = L.map("tripwise-map").setView(
@@ -42,6 +51,37 @@ export default function MapView({ savedPlaceIds, onSave, onRemove }) {
       });
 
       const marker = L.marker(place.position, { icon });
+
+      // Place detail popover shown on the pin itself.
+      const popup = document.createElement("div");
+      popup.className = "map-popup";
+
+      const title = document.createElement("strong");
+      title.textContent = place.name;
+
+      const category = document.createElement("span");
+      category.textContent = place.category;
+      category.style.color = colors[place.category];
+
+      const description = document.createElement("p");
+      description.textContent = place.description;
+
+      const saveButton = document.createElement("button");
+      saveButton.type = "button";
+      saveButton.addEventListener("click", () => {
+        onSaveRef.current(place.id);
+        saveButton.textContent = "Saved";
+        saveButton.disabled = true;
+      });
+
+      popup.append(title, category, description, saveButton);
+      marker.bindPopup(popup);
+
+      marker.on("popupopen", () => {
+        const saved = savedIdsRef.current.includes(place.id);
+        saveButton.textContent = saved ? "Saved" : "+ Save place";
+        saveButton.disabled = saved;
+      });
 
       marker.on("click", () => {
         setSelectedPlace(place);

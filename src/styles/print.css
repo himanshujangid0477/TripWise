@@ -1,0 +1,72 @@
+@media print {
+  .navbar,
+  .no-print,
+  .footer {
+    display: none !important;
+  }
+
+  html,
+  body,
+  .app,
+  .share-page {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .share-page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .share-day,
+  .share-totals div,
+  .share-card {
+    background: #fff !important;
+    border-color: #bbb !important;
+    box-shadow: none !important;
+  }
+
+  .share-header p,
+  .share-day h3 small,
+  .share-day li span,
+  .share-empty,
+  .share-note,
+  .share-table th {
+    color: #444 !important;
+  }
+
+  .share-travel {
+    color: #333 !important;
+  }
+
+  .share-heading {
+    break-after: avoid;
+  }
+
+  .share-day,
+  .share-block,
+  .share-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .progress-track {
+    border: 1px solid #999;
+    background: #fff !important;
+  }
+
+  .progress-fill {
+    background: #444 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  @page {
+    margin: 16mm;
+  }
+}
