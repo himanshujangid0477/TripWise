@@ -150,31 +150,33 @@ export default function ShareView() {
           </div>
         </div>
 
-        <table className="share-table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Budget</th>
-              <th>Actual</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((name) => {
-              const actual = budget.expenses
-                .filter((expense) => expense.category === name)
-                .reduce((sum, expense) => sum + expense.amount * rates[expense.currency], 0);
-              const limit = budget.categoryBudgets[name] ?? 0;
+        <div className="share-table-wrap">
+          <table className="share-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Budget</th>
+                <th>Actual</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map((name) => {
+                const actual = budget.expenses
+                  .filter((expense) => expense.category === name)
+                  .reduce((sum, expense) => sum + expense.amount * rates[expense.currency], 0);
+                const limit = budget.categoryBudgets[name] ?? 0;
 
-              return (
-                <tr key={name} className={actual > limit ? "over" : ""}>
-                  <td>{name}</td>
-                  <td>{formatINR(limit)}</td>
-                  <td>{formatINR(actual)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr key={name} className={actual > limit ? "over" : ""}>
+                    <td>{name}</td>
+                    <td>{formatINR(limit)}</td>
+                    <td>{formatINR(actual)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="share-block">

@@ -1,0 +1,18 @@
+/* Responsive helpers for narrow viewports.
+   Loaded last so these rules take precedence over the base layout. */
+
+/* Budget category table: keep it from overflowing the page on phones. */
+.share-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.share-table-wrap .share-table {
+  min-width: 420px;
+}
+
+@media (min-width: 701px) {
+  .share-table-wrap .share-table {
+    min-width: 0;
+  }
+}

@@ -10,6 +10,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "./styles/features.css";
 import "./styles/dark.css";
 import "./styles/print.css";
+import "./styles/responsive.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -225,7 +225,10 @@ const allocated = Object.values(categoryBudgets).reduce(
           stroke="currentColor"
           strokeOpacity={0.15}
         />
-        <XAxis dataKey="name" tick={{ fill: "currentColor", fontSize: 12 }} />
+        <XAxis
+          dataKey="name"
+          tick={{ fill: "currentColor", fontSize: 12, angle: -30, textAnchor: "end" }}
+        />
         <YAxis tick={{ fill: "currentColor", fontSize: 12 }} />
         <Tooltip formatter={(value) => formatINR(value)} />
         <Legend />
