@@ -18,6 +18,14 @@ TripWise is a React-based travel planning application that helps users explore d
 - Dark and light mode.
 - Responsive layout and empty states.
 
+## Demo
+
+Watch the full walkthrough of the app:
+
+[![Demo video](https://www.loom.com/share/ab1791b60d3f461fa09df66a4a33febe)](https://www.loom.com/share/ab1791b60d3f461fa09df66a4a33febe)
+
+The video shows dark/light mode, the interactive map with clustering and popups, drag-and-drop day-by-day planning with travel-time estimates, the budget tracker and chart, the packing checklist, JSON/ICS export/import, the read-only share link, and the print layout.
+
 ## Technology Stack
 
 | Technology | Purpose |
