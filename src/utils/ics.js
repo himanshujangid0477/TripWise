@@ -84,7 +84,7 @@ export function buildICS({ trip, itinerary }) {
         `DTSTART:${stamp(date, start)}`,
         `DTEND:${stamp(date, end)}`,
         `SUMMARY:${escapeText(place.name)}`,
-        `LOCATION:${escapeText(`${place.name}, Jaipur`)}`,
+        `LOCATION:${escapeText(place.name)}`,
         `GEO:${place.position[0]};${place.position[1]}`,
         `CATEGORIES:${escapeText(place.category)}`,
         `DESCRIPTION:${escapeText(
@@ -99,7 +99,7 @@ export function buildICS({ trip, itinerary }) {
   return lines.map(fold).join("\r\n") + "\r\n";
 }
 
-function normalizeEvent(raw) {
+function normalizeEvent(raw, index) {
   const summary = (raw.SUMMARY ?? "").trim();
   const match = /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/.exec(raw.DTSTART ?? "");
 
@@ -112,7 +112,10 @@ function normalizeEvent(raw) {
     summary,
     uid: raw.UID ?? "",
     date,
-    minutes: match[4] ? Number(match[4]) * 60 + Number(match[5]) : 0,
+    // null means "no time given"; such events keep their file order instead
+    // of all being crammed onto the first slot of the day.
+    minutes: match[4] ? Number(match[4]) * 60 + Number(match[5]) : null,
+    index,
   };
 }
 
@@ -133,12 +136,16 @@ export function parseICS(text) {
 
   const raws = [];
   let current = null;
+  let order = 0;
 
   lines.forEach((line) => {
     if (/^BEGIN:VEVENT/i.test(line)) {
       current = {};
     } else if (/^END:VEVENT/i.test(line)) {
-      if (current) raws.push(current);
+      if (current) {
+        current._order = order++;
+        raws.push(current);
+      }
       current = null;
     } else if (current) {
       const index = line.indexOf(":");
@@ -149,12 +156,14 @@ export function parseICS(text) {
   });
 
   return {
-    events: raws.map(normalizeEvent).filter(Boolean),
+    events: raws.map((raw) => normalizeEvent(raw, raw._order)).filter(Boolean),
     total: raws.length,
   };
 }
 
 function findPlace(event) {
+  // A TripWise-exported event carries its place id in the UID, which is the
+  // most reliable match. Anything else must match a place name exactly.
   const byUid = /^tripwise-(\d+)-/.exec(event.uid);
 
   if (byUid) {
@@ -162,10 +171,8 @@ function findPlace(event) {
     if (place) return place;
   }
 
-  const summary = event.summary.toLowerCase();
-  return (
-    places.find((place) => place.name.toLowerCase() === summary) ??
-    places.find((place) => summary.includes(place.name.toLowerCase()))
+  return places.find(
+    (place) => place.name.toLowerCase() === event.summary.toLowerCase()
   );
 }
 
@@ -195,27 +202,39 @@ export function eventsToItinerary(events) {
   matched.sort(
     (a, b) =>
       a.event.date.localeCompare(b.event.date) ||
-      a.event.minutes - b.event.minutes
+      (a.event.minutes ?? Infinity) - (b.event.minutes ?? Infinity) ||
+      a.event.index - b.event.index
   );
 
   let imported = 0;
   let outOfRange = 0;
+  let duplicates = 0;
   const seen = new Set();
 
   matched.forEach(({ event, place }) => {
     const dayIndex = diffDays(startDate, event.date);
 
-    if (dayIndex > 2) {
+    if (dayIndex < 0 || dayIndex > 2) {
       outOfRange += 1;
       return;
     }
 
-    if (seen.has(place.id)) return;
+    if (seen.has(place.id)) {
+      duplicates += 1;
+      return;
+    }
     seen.add(place.id);
 
     itinerary[DAY_KEYS[dayIndex]].push(place.id);
     imported += 1;
   });
 
-  return { itinerary, startDate, imported, unmatched, outOfRange };
+  return {
+    itinerary,
+    startDate,
+    imported,
+    unmatched,
+    outOfRange,
+    duplicates,
+  };
 }

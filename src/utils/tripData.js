@@ -173,6 +173,16 @@ export function validateTrip(data) {
           fail(`budget.categoryBudgets.${name} must be a number of 0 or more.`);
         }
       });
+
+      const allocated = categories.reduce(
+        (sum, name) => sum + budget.categoryBudgets[name],
+        0
+      );
+      if (allocated > budget.total) {
+        fail(
+          `Category budgets total ${allocated} but the trip budget is ${budget.total}.`
+        );
+      }
     }
 
     if (!Array.isArray(expenses)) {

@@ -27,7 +27,14 @@
 }
 
 .checklist-section-wrapper,
-.tools-section-wrapper {
+.tools-section-wrapper,
+.checklist-section,
+.tools-section {
+  margin: 35px 0;
+}
+
+.budget-section,
+.budget-section-wrapper {
   margin: 35px 0;
 }
 
@@ -267,6 +274,38 @@
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+}
+
+/* Travel estimate between consecutive stops in the itinerary. */
+.travel-estimate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 8px 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--f-accent);
+}
+
+/* Wrapper around a placed stop so the travel estimate stays attached to it. */
+.itinerary-stop {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Panel holding the budget-vs-actual chart and category budget inputs. */
+.budget-chart-panel {
+  margin-top: 24px;
+}
+
+/* Section holding the list of upcoming trips. */
+.trips-section {
+  margin: 35px 0;
+}
+
+/* Panel listing the logged expenses. */
+.expense-list {
+  margin-top: 24px;
 }
 
 /* Empty state */

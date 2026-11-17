@@ -144,7 +144,8 @@ export default function TripTools() {
 
     const notes = [];
     if (result.unmatched) notes.push(`${result.unmatched} events skipped (no matching place).`);
-    if (result.outOfRange) notes.push(`${result.outOfRange} events skipped (after Day 3).`);
+    if (result.outOfRange) notes.push(`${result.outOfRange} events skipped (before Day 1 or after Day 3).`);
+    if (result.duplicates) notes.push(`${result.duplicates} duplicate events skipped (place already scheduled).`);
 
     setMessage({
       type: "success",
